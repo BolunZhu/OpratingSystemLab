@@ -52,7 +52,7 @@ int main(void)
 		while(1){
 		stringstream ss;
 		ss<<times;
-		string str1 = "I send you "+ss.str()+"times\n";
+		string str1 = "I send you "+ss.str()+" times\n";
 //		cout<<str1;
 		const char *p1=str1.c_str();
 		close(pipefd[0]);
