@@ -4,6 +4,7 @@
 #include <sys/sem.h>
 #include <unistd.h>//for execl
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 const int sh_key=1234;//for shmget
 const int sem_key=2345;
@@ -52,24 +53,32 @@ int main(int argc, char const *argv[])
     char * S = (char *)shmat(shmid1,NULL,SHM_R|SHM_W);
     // get sem
     //create 2 sem: 0-read 1-write
-	if(-1==(semid1= semget(sh_key,0,0) ))
+	if(-1==(semid1= semget(sem_key,0,0) ))
 	{
 		return -1;
 	}
     // begin read
-    FILE * fp =fopen(argv[1],"rb");
+    FILE * fp =fopen(argv[1],"wb");
     int index =0;
     int size = atoi(argv[2]);
     int got = 0;
+    int bufsize = array_len/cache_size;
     while(size>0)
     {
+	if(size<bufsize)
+	{
+	   bufsize=size;
+	}
         P(semid1,0);
-        got=fwrite(S+index*cache_size,1,array_len/cache_size,fp);
+	got=fwrite(S+index*cache_size,1,bufsize,fp);
         V(semid1,1);
-        index = (index+1)%cache_size;
+        printf("readbuf read %d bytes from sharememory and write them into ouput file\n",got);
+	index = (index+1)%cache_size;
         size-=got;
     }
     fclose(fp);
+    printf("readbuf successfully copy the file from share memory into ouput file\n");
+    printf("readbuf was killed\n");
     return 0;
     
 }

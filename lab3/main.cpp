@@ -1,9 +1,13 @@
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
 #include <unistd.h>//for execl
 #include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <string>
 const int sh_key=1234;//for shmget
 const int sem_key=2345;
 const int array_len=4096;
@@ -73,16 +77,13 @@ int main(int argc, char const *argv[])
     //…Ë÷√≤Œ ˝
     char cdatasize[20];
     sprintf(cdatasize,"%d",nFileLen);
-    char * exeargv[4];
-    exeargv[2]=cdatasize;
-    exeargv[3]=NULL;
+    printf("now nFilelen=%d cdatasize =%d\n",nFileLen,atoi(cdatasize));
     //create 2 thread: readbuf writebuf
     p1=fork();
     if(p1==0)
     {//p1 begin
         printf("Process 1 readbuf created\n");
-        exeargv[1]="readbuf";
-        execvp("./readbuf",exeargv);
+	execl("./readbuf","readbuf",argv[2],cdatasize,NULL);//output filepath
         fprintf(stderr, "here p1 would never run\n");
         exit(0);
     }
@@ -91,8 +92,7 @@ int main(int argc, char const *argv[])
         if(p2==0)
         {//p2 begin
         printf("Process 2 writebuf created\n");
-        exeargv[1]="writebuf";
-        execvp("./writebuf",exeargv);
+	execl("./writebuf","writebuf",argv[1],cdatasize,NULL);//input filepath
         fprintf(stderr, "here p2 would never run\n");
         exit(0);
         }
