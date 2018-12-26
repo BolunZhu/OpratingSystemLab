@@ -70,7 +70,7 @@ int main(int argc, char const *argv[])
 	   bufsize=size;
 	}
         P(semid1,0);
-	got=fwrite(S+index*cache_size,1,bufsize,fp);
+	got=fwrite(S+index*(array_len/cache_size),1,bufsize,fp);
         V(semid1,1);
         printf("readbuf read %d bytes from sharememory and write them into ouput file\n",got);
 	index = (index+1)%cache_size;

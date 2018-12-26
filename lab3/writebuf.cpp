@@ -82,7 +82,7 @@ int main(int argc, char const *argv[])
 //	printf("now writebuf got into while_loop with size = %d\n",size);
         P(semid1,1);
     //    printf("S+index*cache_size=%p\n",S+index*cache_size);
-	got=fread(S+index*cache_size,1,bufsize,fp);
+	got=fread(S+index*(array_len/cache_size),1,bufsize,fp);
         V(semid1,0);
         printf("writebuf write %d bytes into sharememory from input file\n",got); 
 	index = (index+1)%cache_size;
