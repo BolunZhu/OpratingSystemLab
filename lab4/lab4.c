@@ -11,11 +11,14 @@ void printrights(const unsigned short rights);
 
 int main(int argc ,char const *argv[])
 {
-	char dir[50];
-	printf("Input dir path\n");
-	scanf("%s",dir);
+	char dir[50]=".";
+	if(argc<=1)
+	{
+		printdir(dir,1);
+		return 0;
+	}
+	strcpy(dir,argv[1]);
 	printdir(dir,1);
-	printf("main process over\n");
 	return 0;
 }
 
@@ -27,7 +30,7 @@ void printdir(char * dir , int depth)
 	//open dir
 	if(NULL==(dp = opendir(dir)))
 	{
-		printf("opendir error\n");
+		printf("opendir %s error\n",dir);
 		return ;
 	}
 	//change dir
@@ -91,39 +94,39 @@ void printdir(char * dir , int depth)
 void printrights(const unsigned short rights)
 {
     printf("-");
-    if(rights & S_IRUSR)    //文件所有者具有可读权�?
+    if(rights & S_IRUSR)  
         printf("r");
     else
         printf("-");
-    if(rights & S_IWUSR)    //文件所有者具有可写权�?
+    if(rights & S_IWUSR)  
         printf("w");
     else
         printf("-");
-    if(rights & S_IXUSR)    //文件所有者具有可执行权限
+    if(rights & S_IXUSR) 
 		printf("x");
     else
 		printf("-");
-    if(rights & S_IRGRP)    //用户组具有可读权�?	
+    if(rights & S_IRGRP)  
 		printf("r");
     else
 		printf("-");
-    if(rights & S_IWGRP)    //用户组具有可写权�?
+    if(rights & S_IWGRP)  
 		printf("w");
     else
 		printf("-");
-    if(rights & S_IXGRP)    //用户组具有可执行权限
+    if(rights & S_IXGRP) 
 		printf("x");
     else
 		printf("-");
-    if(rights & S_IROTH)    //其他用户具有可读权限
+    if(rights & S_IROTH) 
 		printf("r");
     else
 		printf("-");
-    if(rights & S_IWOTH)    //其他用户具有可写权限
+    if(rights & S_IWOTH)
 		printf("w");
     else
 		printf("-");
-    if(rights & S_IXOTH)    //其他用户具有可执行权�?
+    if(rights & S_IXOTH)
 		printf("x\t");
     else
 		printf("-\t");
