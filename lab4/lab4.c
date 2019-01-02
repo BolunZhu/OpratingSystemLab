@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <pwd.h>
-
+#include <time.h>
 void printdir(char * dir, int depth);
 void printrights(const unsigned short rights);
 
@@ -57,7 +57,9 @@ void printdir(char * dir , int depth)
 			{
 				printf("%s\t",gpwd->pw_name);
 			}
-			printf("%10lld\t",statbuf.st_size);
+			printf("%10ld\t",statbuf.st_size);
+			//char * tmpp= strtok(ctime(&statbuf.st_mtime),"\n");
+			//printf("%s\t%s\n",tmpp,entry->d_name);
 			printf("%s\t%s\n",strtok(ctime(&statbuf.st_mtime),"\n"),entry->d_name);
 			printdir(entry->d_name,depth+4);
 		}
@@ -75,7 +77,7 @@ void printdir(char * dir , int depth)
 			{
 				printf("%s\t",gpwd->pw_name);
 			}
-			printf("%10lld\t",statbuf.st_size);
+			printf("%10ld\t",statbuf.st_size);
 			printf("%s\t%s\n",strtok(ctime(&statbuf.st_mtime),"\n"),entry->d_name);
 		}
 	}
