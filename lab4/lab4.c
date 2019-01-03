@@ -93,7 +93,21 @@ void printdir(char * dir , int depth)
 
 void printrights(const unsigned short rights)
 {
-    printf("-");
+    if(S_ISREG(rights))
+	printf("-");
+    else if(S_ISLNK(rights))
+	printf("l");
+    else if(S_ISDIR(rights))
+	printf("d");
+    else if(S_ISCHR(rights))
+	printf("c");
+    else if(S_ISFIFO(rights))
+	printf("f");
+    else if(S_ISBLK(rights))
+	printf("b");
+    else
+	printf("s");//socket file	
+	
     if(rights & S_IRUSR)  
         printf("r");
     else
